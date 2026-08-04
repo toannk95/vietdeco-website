@@ -207,6 +207,30 @@ export const projects: ProjectItem[] = [
     icon: Briefcase,
     image: "/images/projects/innotech.jpg",
   },
+  {
+    title: "Căn hộ Landmark 81",
+    category: "Chung cư",
+    style: "Luxury",
+    area: "110 m²",
+    icon: Building2,
+    image: "/images/projects/landmark81.jpg",
+  },
+  {
+    title: "Nhà phố Văn Giang",
+    category: "Nhà phố",
+    style: "Hiện đại",
+    area: "175 m²",
+    icon: Home,
+    image: "/images/projects/van-giang.jpg",
+  },
+  {
+    title: "Café Cornerstone",
+    category: "Shop/Văn phòng",
+    style: "Japandi",
+    area: "90 m²",
+    icon: Store,
+    image: "/images/projects/cornerstone-cafe.jpg",
+  },
 ];
 
 export interface DesignStyle {
