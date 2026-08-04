@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #f7f3ec;
+  color: #201c18;
+}
+
+::selection {
+  background-color: #b4894f;
+  color: #f7f3ec;
+}
+
+/* Slim, warm-toned scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #f7f3ec;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #c9b28f;
+  border-radius: 9999px;
+  border: 2px solid #f7f3ec;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
