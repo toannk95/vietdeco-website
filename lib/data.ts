@@ -408,13 +408,43 @@ export interface Stat {
   value: number;
   suffix: string;
   label: string;
+  description: string;
+  image: string;
 }
 
 export const stats: Stat[] = [
-  { icon: Home, value: 500, suffix: "+", label: "Dự án hoàn thành" },
-  { icon: Award, value: 8, suffix: "+", label: "Năm kinh nghiệm" },
-  { icon: Smile, value: 98, suffix: "%", label: "Khách hàng hài lòng" },
-  { icon: Users, value: 20, suffix: "+", label: "Kiến trúc sư & KTS" },
+  {
+    icon: Home,
+    value: 500,
+    suffix: "+",
+    label: "Dự án hoàn thành",
+    description: "Trải dài khắp các tỉnh thành trên cả nước",
+    image: "/images/projects/landmark81.jpg",
+  },
+  {
+    icon: Award,
+    value: 8,
+    suffix: "+",
+    label: "Năm kinh nghiệm",
+    description: "Đồng hành cùng hàng trăm gia đình Việt",
+    image: "/images/stats/workshop-2.jpg",
+  },
+  {
+    icon: Smile,
+    value: 98,
+    suffix: "%",
+    label: "Khách hàng hài lòng",
+    description: "Đánh giá hài lòng sau khi bàn giao công trình",
+    image: "/images/about/living-room.jpg",
+  },
+  {
+    icon: Users,
+    value: 20,
+    suffix: "+",
+    label: "Kiến trúc sư & KTS",
+    description: "Đội ngũ trẻ, sáng tạo và tận tâm",
+    image: "/images/stats/studio.jpg",
+  },
 ];
 
 export interface WhyUsItem {
