@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Compass, PhoneCall } from "lucide-react";
+import { Compass, Info, PhoneCall } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { showroomTabs } from "@/lib/data";
 import { siteConfig } from "@/lib/site-config";
@@ -32,7 +32,15 @@ export function ShowroomTour() {
         ))}
       </div>
 
-      <div className="mt-8 overflow-hidden rounded-3xl bg-ink">
+      {activeTab.embedUrl && (
+        <div className="mt-6 flex items-center justify-center gap-2 rounded-xl bg-gold/10 px-4 py-2.5 text-center text-xs text-gold-dark sm:text-sm">
+          <Info className="h-4 w-4 flex-shrink-0" />
+          Đây là tour 360° tham khảo để minh hoạ tính năng, chưa phải showroom thật của
+          VietDeco.
+        </div>
+      )}
+
+      <div className="mt-4 overflow-hidden rounded-3xl bg-ink">
         <div className="relative aspect-video w-full">
           {activeTab.embedUrl ? (
             <iframe
