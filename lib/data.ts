@@ -25,6 +25,7 @@ import {
   Lamp,
   LayoutGrid,
   ChefHat,
+  Sofa,
   type LucideIcon,
 } from "lucide-react";
 
@@ -279,6 +280,15 @@ export interface ProductCategory {
 }
 
 export const productCategories: ProductCategory[] = [
+  {
+    icon: Sofa,
+    name: "Sofa Phòng Khách",
+    images: [
+      "/images/products/sofa.jpg",
+      "/images/products/sofa-2.jpg",
+      "/images/products/sofa-3.jpg",
+    ],
+  },
   {
     icon: Tv,
     name: "Kệ Tivi",
