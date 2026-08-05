@@ -37,7 +37,7 @@ export function Header() {
     >
       <Container className="flex h-20 items-center justify-between">
         <a
-          href="#trang-chu"
+          href="/#trang-chu"
           className="font-display text-xl font-semibold tracking-tight text-ink"
         >
           Viet<span className="text-gold-dark">Deco</span>
@@ -56,7 +56,7 @@ export function Header() {
         </nav>
 
         <div className="hidden lg:block">
-          <Button href="#lien-he" size="md">
+          <Button href="/#lien-he" size="md">
             Nhận tư vấn miễn phí
           </Button>
         </div>
@@ -91,7 +91,7 @@ export function Header() {
                   {link.label}
                 </a>
               ))}
-              <Button href="#lien-he" className="mt-3 w-full" onClick={() => setOpen(false)}>
+              <Button href="/#lien-he" className="mt-3 w-full" onClick={() => setOpen(false)}>
                 Nhận tư vấn miễn phí
               </Button>
               <a

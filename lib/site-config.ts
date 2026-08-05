@@ -18,11 +18,12 @@ export const siteConfig = {
 };
 
 export const navLinks = [
-  { label: "Trang chủ", href: "#trang-chu" },
-  { label: "Giới thiệu", href: "#gioi-thieu" },
-  { label: "Dịch vụ", href: "#dich-vu" },
-  { label: "Sản phẩm", href: "#san-pham" },
-  { label: "Dự án", href: "#du-an" },
-  { label: "Quy trình", href: "#quy-trinh" },
-  { label: "Liên hệ", href: "#lien-he" },
+  { label: "Trang chủ", href: "/#trang-chu" },
+  { label: "Giới thiệu", href: "/#gioi-thieu" },
+  { label: "Dịch vụ", href: "/#dich-vu" },
+  { label: "Sản phẩm", href: "/#san-pham" },
+  { label: "Dự án", href: "/#du-an" },
+  { label: "Showroom 360°", href: "/showroom" },
+  { label: "Quy trình", href: "/#quy-trinh" },
+  { label: "Liên hệ", href: "/#lien-he" },
 ];

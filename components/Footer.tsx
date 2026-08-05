@@ -15,7 +15,7 @@ export function Footer() {
       <Container>
         <div className="grid gap-12 pb-16 sm:grid-cols-2 lg:grid-cols-4">
           <div>
-            <a href="#trang-chu" className="font-display text-xl font-semibold text-cream">
+            <a href="/#trang-chu" className="font-display text-xl font-semibold text-cream">
               Viet<span className="text-gold-light">Deco</span>
             </a>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-cream/50">
@@ -55,7 +55,7 @@ export function Footer() {
             <ul className="mt-4 space-y-3">
               {services.slice(0, 5).map((service) => (
                 <li key={service.title}>
-                  <a href="#dich-vu" className="text-sm text-cream/50 hover:text-gold-light">
+                  <a href="/#dich-vu" className="text-sm text-cream/50 hover:text-gold-light">
                     {service.title}
                   </a>
                 </li>

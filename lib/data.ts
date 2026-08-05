@@ -26,6 +26,7 @@ import {
   LayoutGrid,
   ChefHat,
   Sofa,
+  Layers,
   type LucideIcon,
 } from "lucide-react";
 
@@ -477,5 +478,46 @@ export const whyUs: WhyUsItem[] = [
     title: "Bảo hành dài hạn",
     description:
       "Chế độ bảo hành và hỗ trợ bảo trì liên tục, đồng hành dài lâu cùng khách hàng sau bàn giao.",
+  },
+];
+
+export interface ShowroomTab {
+  key: string;
+  label: string;
+  icon: LucideIcon;
+  description: string;
+  // Link tour 360 (Kuula, Klapty, Panoee, Matterport, Coohom...) de nhung
+  // vao iframe. De null khi chua co noi dung that.
+  embedUrl: string | null;
+}
+
+export const showroomTabs: ShowroomTab[] = [
+  {
+    key: "phong-khach",
+    label: "Phòng khách",
+    icon: Sofa,
+    description: "Tham quan các mẫu phòng khách tiêu biểu theo nhiều phong cách khác nhau.",
+    embedUrl: null,
+  },
+  {
+    key: "phong-bep",
+    label: "Phòng bếp",
+    icon: ChefHat,
+    description: "Khám phá bố cục và giải pháp tủ bếp tối ưu cho không gian nấu nướng.",
+    embedUrl: null,
+  },
+  {
+    key: "phong-ngu",
+    label: "Phòng ngủ",
+    icon: Bed,
+    description: "Trải nghiệm không gian nghỉ ngơi với các mẫu giường, tủ đầu giường, tủ quần áo.",
+    embedUrl: null,
+  },
+  {
+    key: "vat-lieu",
+    label: "Khu vật liệu",
+    icon: Layers,
+    description: "Xem trực quan các mẫu vật liệu, màu sắc gỗ, đá, vải bọc đang sử dụng tại VietDeco.",
+    embedUrl: null,
   },
 ];
