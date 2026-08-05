@@ -1,11 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 
-const NOTIFICATION_EMAILS = [
-  "nguyenkhanhtoan2395@gmail.com",
-  "admin@vietdeco.com.vn",
-  "phamtiendat1309@gmail.com",
-];
+// TODO: Resend dang o che do sandbox, chi cho gui toi dung email da dang
+// ky tai khoan. Sau khi xac minh domain vietdeco.com.vn tren Resend, co the
+// them lai "admin@vietdeco.com.vn" va "phamtiendat1309@gmail.com" vao day.
+const NOTIFICATION_EMAILS = ["nguyenkhanhtoan2395@gmail.com"];
 
 interface ContactPayload {
   name?: string;
@@ -83,13 +82,16 @@ export async function POST(request: NextRequest) {
   if (process.env.RESEND_API_KEY) {
     try {
       const resend = new Resend(process.env.RESEND_API_KEY);
-      await resend.emails.send({
+      const { error: sendError } = await resend.emails.send({
         from: "VietDeco Website <onboarding@resend.dev>",
         to: NOTIFICATION_EMAILS,
         replyTo: email && email.trim() ? email : undefined,
         subject: `Lead tư vấn mới: ${name}`,
         html: buildEmailHtml(body),
       });
+      if (sendError) {
+        console.error("[Gửi email thông báo thất bại]", sendError);
+      }
     } catch (error) {
       // Khong lam that bai request cua khach neu gui email loi -
       // lead van duoc ghi lai o log server ben tren.
