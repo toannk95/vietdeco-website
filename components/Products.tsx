@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/Reveal";
@@ -8,7 +9,14 @@ import { Button } from "@/components/ui/Button";
 import { ProductLightbox } from "@/components/ProductLightbox";
 import { productCategories, type ProductCategory } from "@/lib/data";
 
-export function Products() {
+export function Products({
+  categoryImages = {},
+}: {
+  // Map<categoryKey, imageUrl> (ảnh quản lý từ ERP, dạng object vì Server Component
+  // không truyền được Map xuống Client Component) - categoryKey KHÔNG có mặt nghĩa là
+  // ERP chưa có ảnh/gọi ERP lỗi, ô đó tự fallback về icon như trước đây, không vỡ layout.
+  categoryImages?: Record<string, string>;
+}) {
   const [selected, setSelected] = useState<ProductCategory | null>(null);
 
   return (
@@ -22,20 +30,35 @@ export function Products() {
         />
 
         <div className="mt-16 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
-          {productCategories.map((product, index) => (
-            <Reveal key={product.name} delay={(index % 5) * 0.06}>
-              <button
-                type="button"
-                onClick={() => setSelected(product)}
-                className="group flex w-full flex-col items-center gap-3 rounded-2xl border border-cream/10 bg-cream/5 px-4 py-8 text-center transition-colors duration-300 hover:border-gold/40 hover:bg-cream/[0.08]"
-              >
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gold/15 text-gold-light transition-transform duration-300 group-hover:scale-110">
-                  <product.icon className="h-6 w-6" strokeWidth={1.5} />
-                </div>
-                <p className="text-sm font-medium text-cream">{product.name}</p>
-              </button>
-            </Reveal>
-          ))}
+          {productCategories.map((product, index) => {
+            const cmsImageUrl = categoryImages[product.categoryKey];
+            return (
+              <Reveal key={product.categoryKey} delay={(index % 5) * 0.06}>
+                <button
+                  type="button"
+                  onClick={() => setSelected(product)}
+                  className="group flex w-full flex-col items-center gap-3 rounded-2xl border border-cream/10 bg-cream/5 px-4 py-8 text-center transition-colors duration-300 hover:border-gold/40 hover:bg-cream/[0.08]"
+                >
+                  {cmsImageUrl ? (
+                    <div className="relative h-16 w-16 overflow-hidden rounded-xl transition-transform duration-300 group-hover:scale-110">
+                      <Image
+                        src={cmsImageUrl}
+                        alt={product.name}
+                        fill
+                        sizes="64px"
+                        className="object-cover"
+                      />
+                    </div>
+                  ) : (
+                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gold/15 text-gold-light transition-transform duration-300 group-hover:scale-110">
+                      <product.icon className="h-6 w-6" strokeWidth={1.5} />
+                    </div>
+                  )}
+                  <p className="text-sm font-medium text-cream">{product.name}</p>
+                </button>
+              </Reveal>
+            );
+          })}
         </div>
 
         <Reveal delay={0.15} className="mt-12 flex justify-center">

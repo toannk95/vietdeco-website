@@ -276,6 +276,11 @@ export const designStyles: DesignStyle[] = [
 
 export interface ProductCategory {
   icon: LucideIcon;
+  // categoryKey PHẢI khớp CHÍNH XÁC categoryKey đang seed ở ERP backend
+  // (migration V47__add_cms_category_images.sql, bảng cms_category_images) -
+  // đây là khoá để map ảnh CMS (xem lib/cms.ts) vào đúng ô, không dùng "name"
+  // làm khoá vì tên hiển thị có thể đổi mà không muốn vỡ mapping.
+  categoryKey: string;
   name: string;
   images: string[];
 }
@@ -283,6 +288,7 @@ export interface ProductCategory {
 export const productCategories: ProductCategory[] = [
   {
     icon: Sofa,
+    categoryKey: "sofa-phong-khach",
     name: "Sofa Phòng Khách",
     images: [
       "/images/products/sofa.jpg",
@@ -292,6 +298,7 @@ export const productCategories: ProductCategory[] = [
   },
   {
     icon: Tv,
+    categoryKey: "ke-tivi",
     name: "Kệ Tivi",
     images: [
       "/images/products/tv-console.jpg",
@@ -301,6 +308,7 @@ export const productCategories: ProductCategory[] = [
   },
   {
     icon: Footprints,
+    categoryKey: "tu-giay",
     name: "Tủ Giày",
     images: [
       "/images/products/shoe-cabinet.jpg",
@@ -310,6 +318,7 @@ export const productCategories: ProductCategory[] = [
   },
   {
     icon: BookOpen,
+    categoryKey: "tu-sach",
     name: "Tủ Sách",
     images: [
       "/images/products/bookshelf.jpg",
@@ -319,6 +328,7 @@ export const productCategories: ProductCategory[] = [
   },
   {
     icon: Wine,
+    categoryKey: "tu-ruou",
     name: "Tủ Rượu",
     images: [
       "/images/products/wine-cabinet.jpg",
@@ -328,6 +338,7 @@ export const productCategories: ProductCategory[] = [
   },
   {
     icon: Shirt,
+    categoryKey: "tu-quan-ao",
     name: "Tủ Quần Áo",
     images: [
       "/images/products/wardrobe.jpg",
@@ -337,6 +348,7 @@ export const productCategories: ProductCategory[] = [
   },
   {
     icon: Bed,
+    categoryKey: "giuong-ngu",
     name: "Giường Ngủ",
     images: [
       "/images/products/bed.jpg",
@@ -346,6 +358,7 @@ export const productCategories: ProductCategory[] = [
   },
   {
     icon: Lamp,
+    categoryKey: "tu-dau-giuong",
     name: "Tủ Đầu Giường",
     images: [
       "/images/products/nightstand.jpg",
@@ -355,6 +368,7 @@ export const productCategories: ProductCategory[] = [
   },
   {
     icon: LayoutGrid,
+    categoryKey: "combo-phong-ngu",
     name: "Combo Phòng Ngủ",
     images: [
       "/images/products/bedroom-set.jpg",
@@ -364,6 +378,7 @@ export const productCategories: ProductCategory[] = [
   },
   {
     icon: ChefHat,
+    categoryKey: "phong-bep",
     name: "Phòng Bếp",
     images: [
       "/images/products/kitchen.jpg",
