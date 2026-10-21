@@ -9,9 +9,14 @@ import { cn } from "@/lib/utils";
 
 export function ProductLightbox({
   product,
+  images,
   onClose,
 }: {
   product: ProductCategory | null;
+  // Danh sách ảnh THẬT SỰ hiển thị trong modal - do Products.tsx tự quyết định (ảnh CMS
+  // theo categoryKey nếu có, fallback ảnh mẫu hardcode nếu chưa có ảnh CMS nào) - KHÔNG
+  // đọc thẳng product.images ở đây nữa, xem resolveGalleryImages() trong Products.tsx.
+  images: string[];
   onClose: () => void;
 }) {
   const [index, setIndex] = useState(0);
@@ -21,13 +26,13 @@ export function ProductLightbox({
   }, [product]);
 
   const goPrev = () => {
-    if (!product) return;
-    setIndex((current) => (current - 1 + product.images.length) % product.images.length);
+    if (images.length === 0) return;
+    setIndex((current) => (current - 1 + images.length) % images.length);
   };
 
   const goNext = () => {
-    if (!product) return;
-    setIndex((current) => (current + 1) % product.images.length);
+    if (images.length === 0) return;
+    setIndex((current) => (current + 1) % images.length);
   };
 
   useEffect(() => {
@@ -88,7 +93,7 @@ export function ProductLightbox({
                   className="absolute inset-0"
                 >
                   <Image
-                    src={product.images[index]}
+                    src={images[index]}
                     alt={`${product.name} — ảnh ${index + 1}`}
                     fill
                     sizes="(min-width: 640px) 42rem, 100vw"
@@ -98,7 +103,7 @@ export function ProductLightbox({
                 </motion.div>
               </AnimatePresence>
 
-              {product.images.length > 1 && (
+              {images.length > 1 && (
                 <>
                   <button
                     type="button"
@@ -118,7 +123,7 @@ export function ProductLightbox({
                   </button>
 
                   <div className="absolute bottom-4 left-1/2 z-10 flex -translate-x-1/2 gap-1.5">
-                    {product.images.map((image, dotIndex) => (
+                    {images.map((image, dotIndex) => (
                       <button
                         key={image}
                         type="button"

@@ -8,14 +8,34 @@ import { Reveal } from "@/components/Reveal";
 import { Button } from "@/components/ui/Button";
 import { ProductLightbox } from "@/components/ProductLightbox";
 import { productCategories, type ProductCategory } from "@/lib/data";
+import type { CmsCategoryData } from "@/lib/cms";
+
+/**
+ * Ảnh hiển thị trong modal chi tiết (thư viện) của 1 danh mục - lấy từ CMS theo đúng
+ * categoryKey, ĐÃ sắp theo sortOrder, nếu có ít nhất 1 ảnh. Ảnh bìa (ô trang chủ) nằm
+ * trong chính mảng này (vì cover cũng là 1 photo trong cms_category_photos, xem backend) -
+ * KHÔNG trộn với ảnh mẫu hardcode khi đã có ảnh CMS thật.
+ *
+ * DỰ PHÒNG TẠM: danh mục CHƯA có ảnh CMS nào (photos rỗng) thì dùng product.images (ảnh
+ * mẫu hardcode cũ trong lib/data.ts) để modal không trống. Gỡ nhánh fallback này (và field
+ * `images` trong lib/data.ts) khi toàn bộ 10 danh mục đã có ít nhất 1 ảnh CMS thật.
+ */
+function resolveGalleryImages(product: ProductCategory, categoryData: Record<string, CmsCategoryData>): string[] {
+  const cms = categoryData[product.categoryKey];
+  if (cms && cms.photos.length > 0) {
+    return [...cms.photos].sort((a, b) => a.sortOrder - b.sortOrder).map((p) => p.imageUrl);
+  }
+  return product.images;
+}
 
 export function Products({
-  categoryImages = {},
+  categoryData = {},
 }: {
-  // Map<categoryKey, imageUrl> (ảnh quản lý từ ERP, dạng object vì Server Component
-  // không truyền được Map xuống Client Component) - categoryKey KHÔNG có mặt nghĩa là
-  // ERP chưa có ảnh/gọi ERP lỗi, ô đó tự fallback về icon như trước đây, không vỡ layout.
-  categoryImages?: Record<string, string>;
+  // Map<categoryKey, {imageUrl, photos}> (dữ liệu CMS từ ERP, dạng object vì Server
+  // Component không truyền được Map xuống Client Component) - categoryKey KHÔNG có mặt
+  // nghĩa là ERP chưa có ảnh/gọi ERP lỗi, ô đó tự fallback icon/ảnh mẫu như trước đây,
+  // không vỡ layout.
+  categoryData?: Record<string, CmsCategoryData>;
 }) {
   const [selected, setSelected] = useState<ProductCategory | null>(null);
 
@@ -31,7 +51,7 @@ export function Products({
 
         <div className="mt-16 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
           {productCategories.map((product, index) => {
-            const cmsImageUrl = categoryImages[product.categoryKey];
+            const cmsImageUrl = categoryData[product.categoryKey]?.imageUrl ?? null;
             return (
               <Reveal key={product.categoryKey} delay={(index % 5) * 0.06}>
                 <button
@@ -68,7 +88,11 @@ export function Products({
         </Reveal>
       </Container>
 
-      <ProductLightbox product={selected} onClose={() => setSelected(null)} />
+      <ProductLightbox
+        product={selected}
+        images={selected ? resolveGalleryImages(selected, categoryData) : []}
+        onClose={() => setSelected(null)}
+      />
     </section>
   );
 }

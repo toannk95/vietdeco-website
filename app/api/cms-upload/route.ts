@@ -1,4 +1,4 @@
-import { put } from "@vercel/blob";
+import { del, put } from "@vercel/blob";
 import { revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -17,9 +17,10 @@ import { NextRequest, NextResponse } from "next/server";
  */
 const MAX_IMAGE_SIZE_BYTES = 5 * 1024 * 1024;
 const ALLOWED_CONTENT_TYPES = new Set(["image/jpeg", "image/png", "image/webp", "image/heic", "image/heif"]);
-// "cms/{categoryKey}.{ext}" - khớp đúng pattern ERP backend dùng (xem
-// CmsCategoryImageService.upload) - chặn sớm pathname lạ dù secret có lỡ lộ.
-const PATHNAME_PATTERN = /^cms\/[a-z0-9-]+\.(jpg|jpeg|png|webp|heic|heif)$/;
+// "cms/{categoryKey}/{uuid}.{ext}" - khớp đúng pattern ERP backend dùng (xem
+// CmsCategoryPhotoService, V48 - mỗi ảnh pathname DUY NHẤT, không còn ghi đè theo
+// categoryKey như bản "1 ảnh/danh mục" cũ) - chặn sớm pathname lạ dù secret có lỡ lộ.
+const PATHNAME_PATTERN = /^cms\/[a-z0-9-]+\/[a-z0-9-]+\.(jpg|jpeg|png|webp|heic|heif)$/;
 
 export async function POST(request: NextRequest) {
   const secretFromHeader = request.headers.get("x-cms-upload-secret");
@@ -69,4 +70,39 @@ export async function POST(request: NextRequest) {
   }
 
   return NextResponse.json({ success: true, url: blobUrl });
+}
+
+/**
+ * Xoá 1 ảnh khỏi Vercel Blob - gọi bởi CmsCategoryPhotoService.deletePhoto() (ERP backend)
+ * khi CEO xoá 1 ảnh trong thư viện (V48). KHÔNG tự revalidateTag ở đây - ERP backend tự
+ * gọi riêng webhook /api/revalidate sau khi xoá (xem WebsiteRevalidateService bên backend),
+ * vì xoá/đặt bìa/đổi thứ tự dùng chung 1 cơ chế revalidate, không ghi Blob gì thêm ở đây.
+ */
+export async function DELETE(request: NextRequest) {
+  const secretFromHeader = request.headers.get("x-cms-upload-secret");
+  const expectedSecret = process.env.CMS_UPLOAD_SECRET;
+  if (!expectedSecret || secretFromHeader !== expectedSecret) {
+    return NextResponse.json({ success: false, error: "Invalid secret" }, { status: 401 });
+  }
+
+  let pathname: unknown;
+  try {
+    const body = await request.json();
+    pathname = body?.pathname;
+  } catch {
+    return NextResponse.json({ success: false, error: "Invalid JSON body" }, { status: 400 });
+  }
+
+  if (typeof pathname !== "string" || !PATHNAME_PATTERN.test(pathname)) {
+    return NextResponse.json({ success: false, error: "Invalid pathname" }, { status: 400 });
+  }
+
+  try {
+    await del(pathname);
+  } catch (err) {
+    console.error("cms-upload DELETE: del() trên Vercel Blob thất bại", err);
+    return NextResponse.json({ success: false, error: "Blob delete failed" }, { status: 502 });
+  }
+
+  return NextResponse.json({ success: true });
 }
